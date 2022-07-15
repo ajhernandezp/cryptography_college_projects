@@ -1,0 +1,56 @@
+import numpy as np 
+from random import random 
+from random import randint
+from random import seed
+from random import sample
+
+def listToString(s):
+    str1 = ""
+    for ele in s:
+        str1 += ele
+    return str1
+
+def key(mensaje):
+  numeros = []
+  for i in range (250):
+    numeros.append(randint(1, 500))
+  abecedario = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j','k', 'l', 'm', 'n', 'ñ', 'o', 'p', 'q', 'r','s', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+  simbolos = ['@', '$', '^', '&', '*', '(', ')', '_', '+', ':', '£', '?', '~']
+  combined = np.append(abecedario, simbolos)
+  combined = np.append(combined, numeros)
+  np.random.shuffle(combined)
+  np.random.shuffle(combined)
+  new_list = []
+  for i in range(500):
+    new_list.append(randint(1, 750))
+  new_list = np.append(combined, new_list)
+  np.random.shuffle(new_list)
+  subset = sample(list(new_list), len(mensaje))
+  return listToString(subset)
+
+opcion1 = 0 
+
+while (opcion1 != 3):
+  print("""Bienvenido al programa de cifrar y descifrar texto. Elija una de las siguientes opciones
+                        1- Cifrar
+                        2- Descifrar
+                        3- Salir del programa""")
+  opcion1 = int(input("Digite el numero de la accion que desea realizar "))
+  if (opcion1 == 1):
+    mensaje = input("Ingrese el texto que desea cifrar ")
+    llave = key(mensaje)
+    print("Su llave de cifrado es", llave)
+    def c(llave, mensaje):
+      return [chr(ord(a) ^ ord(b)) for (a,b) in zip(mensaje, llave)]
+    print("Su mensaje cifrado es:", "".join(c(llave, mensaje)))
+  elif (opcion1 == 2):
+    keycipher = input("inserte su llave de descifrado ")
+    ciphertext2 = input("Inserte su mensaje cifrado ")
+    decrypted = [chr(ord(a) ^ ord(b)) for (a,b) in zip(ciphertext2, keycipher)]
+    msjdesifrado = "".join(decrypted)
+    print ("Su mensaje descifrado es:", msjdesifrado)
+  elif (opcion1 == 3):
+    print("Saliste del programa")
+    break
+  else:
+    print("Hubo un error. Intentelo de nuevo")
