@@ -31,26 +31,26 @@ def key(mensaje):
 opcion1 = 0 
 
 while (opcion1 != 3):
-  print("""Bienvenido al programa de cifrar y descifrar texto. Elija una de las siguientes opciones
-                        1- Cifrar
-                        2- Descifrar
-                        3- Salir del programa""")
-  opcion1 = int(input("Digite el numero de la accion que desea realizar "))
+  print("""Welcome to the encryption program to encrypt and decrypt text. Choose one of the following option:
+                        1- Encrypt
+                        2- Decrypt
+                        3- Exit""")
+  opcion1 = int(input("Type the number of the action you want to do "))
   if (opcion1 == 1):
-    mensaje = input("Ingrese el texto que desea cifrar ")
+    mensaje = input("Type the text you want to encrytp ")
     llave = key(mensaje)
-    print("Su llave de cifrado es", llave)
+    print("Your secure key is: ", llave)
     def c(llave, mensaje):
       return [chr(ord(a) ^ ord(b)) for (a,b) in zip(mensaje, llave)]
-    print("Su mensaje cifrado es:", "".join(c(llave, mensaje)))
+    print("Your text encrypted is: ", "".join(c(llave, mensaje)))
   elif (opcion1 == 2):
-    keycipher = input("inserte su llave de descifrado ")
-    ciphertext2 = input("Inserte su mensaje cifrado ")
+    keycipher = input("Type your secure key to decrypt: ")
+    ciphertext2 = input("Type the ciphertext ")
     decrypted = [chr(ord(a) ^ ord(b)) for (a,b) in zip(ciphertext2, keycipher)]
     msjdesifrado = "".join(decrypted)
-    print ("Su mensaje descifrado es:", msjdesifrado)
+    print ("Your original message is: ", msjdesifrado)
   elif (opcion1 == 3):
-    print("Saliste del programa")
+    print("You exit the program")
     break
   else:
-    print("Hubo un error. Intentelo de nuevo")
+    print("There was an error. Try one more time")
