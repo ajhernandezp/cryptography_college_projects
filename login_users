@@ -1,0 +1,125 @@
+import tkinter 
+from tkinter import*
+from tkinter import messagebox
+import pymysql
+
+# title and icons
+def menu_main ():
+    global screenP
+    screenP=Tk()
+    screenP.geometry("400x600")
+    screenP.title("Log in")
+    screenP.iconbitmap('./imageneskrypto/Icono.ico')
+    image=PhotoImage(file="imageneskrypto/logo1.gif")
+    image=image.subsample(2,2)
+    label=Label(image=image)
+    label.pack()
+    Label(text="System Log In", bg="snow", fg="Black", width="300", height="3", font="Arial, 20").pack()
+    Label(text="").pack()
+
+    # buttons
+    Button(text="Log in", height="3", width="30",command=start_session).pack()
+    Label(text="").pack
+    Button(text="Register", height="3", width="30", command=register).pack()
+
+    screenP.mainloop()
+# log in screen
+def start_session ():
+    global screen1
+    screen1 = Toplevel(screenP)
+    screen1.geometry("400x250")
+    screen1.title ("System Log In")
+    screen1.iconbitmap('./imageneskrypto/Icono.ico')
+
+    Label(screen1, text="Enter your username\n and\n password",bg="snow", fg="Black", width="300", height="3", font="Arial, 10").pack()
+    Label(screen1, text="").pack()
+
+    global username_verified
+    global userpassword_verified
+
+    username_verified = StringVar()
+    userpassword_verified = StringVar()
+
+    global name_user_entry
+    global password_user_entry
+
+    Label(screen1, text="Username").pack()
+    name_user_entry = Entry(screen1, textvariable=username_verified)
+    name_user_entry.pack()
+    Label(screen1).pack()
+
+    Label(screen1, text="Password").pack()
+    password_user_entry = Entry(screen1, show="*",textvariable=userpassword_verified)
+    password_user_entry.pack()
+    Label(screen1).pack()
+
+    Button(screen1, text="Log in", command=data_validation).pack()
+
+# User registration
+def register():
+    global screen2
+    screen2 = Toplevel(screenP)
+    screen2.geometry("400x250")
+    screen2.title ("System Registration")
+    screen2.iconbitmap('./imageneskrypto/Icono.ico')
+
+    global nameuser_entry
+    global passuser_entry
+
+    nameuser_entry = StringVar()
+    passuser_entry = StringVar()
+
+    Label(screen2, text="Create your username and password\n to be registered in the system", bg="snow", fg="Black", width="300", height="3", font="Arial, 10").pack()
+    Label(screen2, text="").pack()
+    
+    Label(screen2, text="Username").pack()
+    nameuser_entry = Entry(screen2)
+    nameuser_entry.pack()
+    Label(screen2).pack()
+
+    Label(screen2, text="Password").pack()
+    passuser_entry = Entry(screen2, show="*")
+    passuser_entry.pack()
+    Label(screen2).pack()
+    Button(screen2, text="Register user", command=data_insert).pack()
+
+def data_insert():
+    bd=pymysql.connect(
+        host="localhost", # server name
+        user="root", # data base user
+        passwd="",
+        db="bd2" # data base name
+        )
+
+    fcursor=bd.cursor()
+
+    sql="INSERT INTO login (username, password) VALUES ('{0}', '{1}')".format(nameuser_entry.get(), passuser_entry.get())
+
+    try:
+        fcursor.execute(sql)
+        bd.commit ()
+        messagebox.showinfo(message="Information registered successfully", title="Registration")
+
+    except:
+        bd.rollback ()
+        messagebox.showerror(message="Not registered, please try again", title="Error")
+
+    bd.close()
+
+def data_validation():
+    bd=pymysql.connect(
+        host="localhost", # server name
+        user="root", # data base user
+        passwd="",
+        db="bd2" # data base name
+        )
+    
+    fcursor=bd.cursor()
+    fcursor.execute("SELECT password FROM login WHERE username='"+username_verified.get()+"' and password='"+userpassword_verified.get()+"'")
+    if fcursor.fetchall():
+        messagebox.showinfo(title="Start session", message="Correct username and password")
+    else:
+        messagebox.showerror(title="Start session", message="Incorrect username or password")
+    bd.close()
+
+menu_main()
