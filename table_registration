@@ -1,0 +1,120 @@
+# libraries needed
+import tkinter as tk
+from tkinter import *
+from tkinter import messagebox
+import pymysql
+
+# insert function
+def insert_data():
+    bd = pymysql.connect(
+        host="localhost",
+        user="root",
+        passwd="",
+        db="clientes"
+        )
+    cursor=bd.cursor()
+    sql = "INSERT INTO customers (company, customers_name, debit_card, expiration_date, contact, email)\
+            VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}')".format(comp1.get(), cxname.get(), dbnum.get(), expdate.get(), conct.get(), email.get())
+    try:
+        cursor.execute(sql)
+        bd.commit ()
+        messagebox.showinfo(message="Information registered successfully", title="Registration")
+    except:
+        bd.rollback()
+        messagebox.showerror(message="Error, no data registered", title="Error")
+
+        bd.close()
+
+# delete all info function
+def delete():
+    bd = pymysql.connect(
+        host="localhost",
+        user="root",
+        passwd="",
+        db="clientes"
+        )
+    cursor=bd.cursor()
+    sql = "DELETE FROM Customers WHERE company='"+comp1.get()+"'"
+    try:
+        cursor.execute(sql)
+        bd.commit ()
+        messagebox.showinfo(message="Customers information has been deleted", title="Delete")
+    except:
+        bd.rollback()
+        messagebox.showerror(message="Error, no data deteled", title="Error")
+
+        bd.close()
+
+
+# create table: cursor.execute("CREATE TABLE Customers (id int PRIMARY KEY AUTO_INCREMENT NOT NULL, company VARCHAR(50), custumers_name VARCHAR(50), debit_card VARCHAR(16), expiration_date VARCHAR(5), contact VARCHAR(50), email VARCHAR(50), phone_number VARCHAR(50) NOT NULL)")
+# Close window function
+def close():
+    wd1.destroy()
+
+# main window
+wd1= tk.Tk()
+wd1.title("Registration form")
+wd1.geometry("350x750")
+wd1.config(background="snow")
+
+image=tk.PhotoImage(file="./imageneskrypto/logo1.gif")
+image=image.subsample(3,3)
+label=tk.Label(image=image)
+label.pack()
+
+# fields and entry spaces
+# title
+e2=tk.Label(wd1, text="Customer number", bg="gray", fg="white")
+e2.pack(padx=5, pady=5, ipadx=5, ipady=5, fill=tk.X)
+# name data entry
+cxn1=tk.Entry(wd1)
+cxn1.pack(padx=5, pady=5, ipadx=5, ipady=5, fill=tk.X)
+
+e1=tk.Label(wd1, text="Company", bg="gray", fg="white")
+e1.pack(padx=5, pady=5, ipadx=5, ipady=5, fill=tk.X)
+# name data entry
+comp1=tk.Entry(wd1)
+comp1.pack(padx=5, pady=5, ipadx=5, ipady=5, fill=tk.X)
+
+e1=tk.Label(wd1, text="Customers name", bg="gray", fg="white")
+e1.pack(padx=5, pady=5, ipadx=5, ipady=5, fill=tk.X)
+cxname=tk.Entry(wd1)
+cxname.pack(padx=5, pady=5, ipadx=5, ipady=5, fill=tk.X)
+
+e2=tk.Label(wd1, text="Debit card", bg="gray", fg="white")
+e2.pack(padx=5, pady=5, ipadx=5, ipady=5, fill=tk.X)
+dbnum=tk.Entry(wd1)
+dbnum.pack(padx=5, pady=5, ipadx=5, ipady=5, fill=tk.X)
+
+e3=tk.Label(wd1, text="Expiration date", bg="gray", fg="white")
+e3.pack(padx=5, pady=5, ipadx=5, ipady=5, fill=tk.X)
+expdate=tk.Entry(wd1)
+expdate.pack(padx=5, pady=5, ipadx=5, ipady=5, fill=tk.X)
+
+e4=tk.Label(wd1, text="Contact", bg="gray", fg="white")
+e4.pack(padx=5, pady=5, ipadx=5, ipady=5, fill=tk.X)
+conct=tk.Entry(wd1)
+conct.pack(padx=5, pady=5, ipadx=5, ipady=5, fill=tk.X)
+
+e5=tk.Label(wd1, text="Email", bg="gray", fg="white")
+e5.pack(padx=5, pady=5, ipadx=5, ipady=5, fill=tk.X)
+email=tk.Entry(wd1)
+email.pack(padx=5, pady=5, ipadx=5, ipady=5, fill=tk.X)
+
+# buttons
+button1=tk.Button(wd1, text="Register", fg="black", command=insert_data)
+button1.pack(side=tk.LEFT)
+
+button2=tk.Button(wd1, text="Review", fg="black")
+button2.pack(side=tk.LEFT)
+
+button3=tk.Button(wd1, text="Update", fg="black")
+button3.pack(side=tk.LEFT)
+
+button4=tk.Button(wd1, text="Delete", fg="black", command=delete)
+button4.pack(side=tk.LEFT)
+
+button5=tk.Button(wd1, text="Exit", fg="black", command=close)
+button5.pack(side=tk.LEFT)
+
+wd1.mainloop()
